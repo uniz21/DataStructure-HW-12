@@ -50,6 +50,8 @@ int main()
 
 	srand(time(NULL));
 
+	printf("[----- [Yoon Yong Jin] [2016039040] -----]");
+
 	do{
 		printf("----------------------------------------------------------------\n");
 		printf("                        Sorting & Hashing                       \n");
