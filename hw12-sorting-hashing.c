@@ -41,7 +41,9 @@ int search(int *ht, int key);
 int main()
 {
 	char command;
+	/* 정수 배열 생성 */
 	int *array = NULL;
+	/* 해쉬 테이블 생성 */
 	int *hashtable = NULL;
 	int key = -1;
 	int index = -1;
@@ -159,22 +161,23 @@ void printArray(int *a)
 	printf("\n");
 }
 
-
+/* 선택정렬 가장 작은 값을 찾아 앞으로 꺼낸다 */
 int selectionSort(int *a)
 {
-	int min;
-	int minindex;
+	int min; /* 가장 작은 원소 */
+	int minindex; /* 가장 작은 원소의 인덱스 */
 	int i, j;
 
 	printf("Selection Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
-	printArray(a);
+	printArray(a); /* 정렬 전 배열 */
 
 	for (i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
 		minindex = i;
 		min = a[i];
+		/* 가장 작은 원소 탐색 */
 		for(j = i+1; j < MAX_ARRAY_SIZE; j++)
 		{
 			if (min > a[j])
@@ -183,15 +186,17 @@ int selectionSort(int *a)
 				minindex = j;
 			}
 		}
+		/* 기준위치의 원소와 가장 작은 원소의 위치를 서로 바꾼다 */
 		a[minindex] = a[i];
 		a[i] = min;
 	}
 
 	printf("----------------------------------------------------------------\n");
-	printArray(a);
+	printArray(a); /* 정렬 후 배열 */
 	return 0;
 }
 
+/* 삽입 정렬 : 첫번째 원소와 가장 작은 원소를 1대1로 교환하는 선택 정렬과는 달리 가장 작은 원소를 맨 앞으로 꺼내오는 정렬 - 정렬된 앞부분과 정렬되지 않은 뒷부분으로 나뉜다(두개의 부분집합)*/
 int insertionSort(int *a)
 {
 	int i, j, t;
@@ -199,26 +204,27 @@ int insertionSort(int *a)
 	printf("Insertion Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
-	printArray(a);
+	printArray(a); /* 정렬 전 배열 */
 
-	for(i = 1; i < MAX_ARRAY_SIZE; i++)
+	for(i = 1; i < MAX_ARRAY_SIZE; i++) /* 배열의 2번째 원소부터 탐색 */
 	{
-		t = a[i];
-		j = i;
-		while (a[j-1] > t && j > 0)
+		t = a[i]; /* 현재 탐색중인 i+1번째 원소 값을 임시 저장 */
+		j = i;	  /* 원소의 인덱스 임시 저장 */
+		while (a[j-1] > t && j > 0) /* 왼쪽의 인접 원소가 첫번째 원소가 아니면서 임시저장한 원소보다 크다면 반복 */
 		{
-			a[j] = a[j-1];
-			j--;
+			a[j] = a[j-1]; /* 왼쪽의 원소를 오른쪽으로 밀어낸다 */
+			j--; /* 좌측으로 탐색 */
 		}
-		a[j] = t;
+		a[j] = t; /* 왼쪽 원소가 t보다 작게 되는 위치에 원소를 삽입하여 정렬 */ 
 	}
 
 	printf("----------------------------------------------------------------\n");
-	printArray(a);
+	printArray(a); /* 정렬 후 배열 */
 
 	return 0;
 }
 
+/* 버블 정렬 두 인접한 원소를 검사하여 정렬 - 최대값을 제일 뒤로 보내는 것을 반복 */
 int bubbleSort(int *a)
 {
 	int i, j, t;
@@ -226,23 +232,24 @@ int bubbleSort(int *a)
 	printf("Bubble Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
-	printArray(a);
+	printArray(a); /* 정렬 전 배열 */
 
 	for(i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
-		for (j = 0; j < MAX_ARRAY_SIZE; j++)
+		for (j = 0; j < MAX_ARRAY_SIZE; j++) /* 최대갑을 갖는 원소를 맨 뒤로 보낸다 */
 		{
+			/* 왼쪽의 원소 값이 오른쪽 원소 값보다 크다면 자리 교체 */
 			if (a[j-1] > a[j])
 			{
-				t = a[j-1];
-				a[j-1] = a[j];
-				a[j] = t;
+				t = a[j-1]; /* t에 왼쪽 원소 값 임시 저장 */
+				a[j-1] = a[j]; /* 왼쪽 위치에 오른쪽 원소 값 저장 */
+				a[j] = t; /* 오른쪽 원소에 임시 저장한 왼쪽 원소 값 저장 */
 			}
 		}
 	}
 
 	printf("----------------------------------------------------------------\n");
-	printArray(a);
+	printArray(a); /* 정렬 후 배열 */
 
 	return 0;
 }
@@ -254,7 +261,7 @@ int shellSort(int *a)
 	printf("Shell Sort: \n");
 	printf("----------------------------------------------------------------\n");
 
-	printArray(a);
+	printArray(a); /* 정렬 전 배열 */
 
 	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2)
 	{
@@ -274,7 +281,7 @@ int shellSort(int *a)
 		}
 	}
 	printf("----------------------------------------------------------------\n");
-	printArray(a);
+	printArray(a); /* 정렬 후 배열 */
 
 	return 0;
 }
