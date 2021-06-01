@@ -122,6 +122,7 @@ int main()
 	return 1;
 }
 
+/* 초기화 */
 int initialize(int** a)
 {
 	int *temp = NULL;
@@ -140,6 +141,7 @@ int initialize(int** a)
 	return 0;
 }
 
+/* 배열 메모리 해제 */
 int freeArray(int *a)
 {
 	if(a != NULL)
@@ -147,16 +149,17 @@ int freeArray(int *a)
 	return 0;
 }
 
+/* 배열 출력 */
 void printArray(int *a)
 {
 	if (a == NULL) {
 		printf("nothing to print.\n");
 		return;
 	}
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
+	for(int i = 0; i < MAX_ARRAY_SIZE; i++) /* 배열 인덱스 출력 */
 		printf("a[%02d] ", i);
 	printf("\n");
-	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
+	for(int i = 0; i < MAX_ARRAY_SIZE; i++) /* 배열 원소 값 출력 */
 		printf("%5d ", a[i]);
 	printf("\n");
 }
@@ -254,6 +257,7 @@ int bubbleSort(int *a)
 	return 0;
 }
 
+/* 셸 정렬 역순 배열에 성능이 떨어지는 삽입 정렬을 보완 */
 int shellSort(int *a)
 {
 	int i, j, k, h, v;
@@ -263,10 +267,12 @@ int shellSort(int *a)
 
 	printArray(a); /* 정렬 전 배열 */
 
-	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2)
+	/* 일정한 간격 h를 통해 삽입 정렬 */
+	for (h = MAX_ARRAY_SIZE/2; h > 0; h /= 2) 
 	{
 		for (i = 0; i < h; i++)
 		{
+			/* 인접한 두 원소가 아닌 간격 h만큼 떨어진 원소들을 비교하여 삽입 정렬 */
 			for(j = i + h; j < MAX_ARRAY_SIZE; j += h)
 			{
 				v = a[j];
@@ -286,6 +292,7 @@ int shellSort(int *a)
 	return 0;
 }
 
+/* 퀵 정렬 기준 값(피봇) 을 중심으로 왼쪽과 오른쪽을 나누어 정렬 */
 int quickSort(int *a, int n)
 {
 	int v, t;
@@ -293,34 +300,36 @@ int quickSort(int *a, int n)
 
 	if (n > 1)
 	{
-		v = a[n-1];
+		v = a[n-1]; /* 오른쪽 끝 원소를 기준값으로 선택 */
 		i = -1;
 		j = n - 1;
 
 		while(1)
 		{
-			while(a[++i] < v);
-			while(a[--j] > v);
+			while(a[++i] < v); /* 배열의 왼쪽부터 v보다 작거나 같은 원소를 탐색, while문 종료 후 i는 v보다 큰 원소의 인덱스 */
+			while(a[--j] > v); /* 배열의 오른쪽부터 v보다 크거나 같은 원소를 탐색, while문 종료 후 j는 v보다 작은 원소의 인덱스 */
 
-			if (i >= j) break;
+			if (i >= j) break; /* i가 j보다 크거나 같다면 반복문 탈출 */
+			/* i번째 원소와 v번째 원소의 위치를 서로 교체 */
 			t = a[i];
 			a[i] = a[j];
 			a[j] = t;
 		}
-		t = a[i];
+		/* i번째 원소와 기준 값 원소의 위치를 서로 교체 */
+		t = a[i]; 
 		a[i] = a[n-1];
 		a[n-1] = t;
 
-		quickSort(a, i);
-		quickSort(a+i+1, n-i-1);
+		quickSort(a, i); /* i를 기준값 으로 왼쪽 부분집합을 퀵정렬 */
+		quickSort(a+i+1, n-i-1); /* 오른쪽 부분집합을 퀵정렬 */
 	}
-
 
 	return 0;
 }
 
+/* 제산함수 */
 int hashCode(int key) {
-   return key % MAX_HASH_TABLE_SIZE;
+   return key % MAX_HASH_TABLE_SIZE; /* 홈 버킷 인덱스 리턴 */
 }
 
 int hashing(int *a, int **ht)
@@ -348,16 +357,20 @@ int hashing(int *a, int **ht)
 	int index = -1;
 	for (int i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
-		key = a[i];
-		hashcode = hashCode(key);
+		key = a[i]; /* 원소 값을 키로 저장 */
+		hashcode = hashCode(key); /* 키에 대한 해시코드 생성 */
 		/*
 		printf("key = %d, hashcode = %d, hashtable[%d]=%d\n", key, hashcode, hashcode, hashtable[hashcode]);
 		*/
+		
+		/* 해시코드를 인덱스로하는 해시테이블이 비어있는 경우 키(데이터)를 저장 */
 		if (hashtable[hashcode] == -1)
 		{
 			hashtable[hashcode] = key;
-		} else 	{
-
+		} 
+		/* 충돌이 일어나면 */
+		else {
+			/* 비어있는 버킷을 탐색해 데이터 저장 */
 			index = hashcode;
 
 			while(hashtable[index] != -1)
@@ -376,17 +389,19 @@ int hashing(int *a, int **ht)
 
 int search(int *ht, int key)
 {
+	/* 키 값에 대한 해시코드를 생성해 인덱스에 저장 */
 	int index = hashCode(key);
 
+	/* 인덱스를 통해 해시테이블 탐색*/
+
+	/* 저장된 데이터가 키 값과 일치하면 인덱스를 리턴 */
 	if(ht[index] == key)
 		return index;
 
+	/* 데이터가 키 값과 일치하지 않으면, 다른 버킷들을 탐색해 데이터를 찾는다 */
 	while(ht[++index] != key)
 	{
 		index = index % MAX_HASH_TABLE_SIZE;
 	}
 	return index;
 }
-
-
-
